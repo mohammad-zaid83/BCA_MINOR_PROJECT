@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% set active = 'analytics' %}
+{% block title %}Analytics{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Analytics</h1>
+        <p class="muted">Insights from your predictions and the training dataset.</p>
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon blue"><i class="fa-solid fa-database"></i></div>
+        <div><div class="stat-label">Dataset Records</div><div class="stat-value">{{ dataset_stats.count }}</div></div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon green"><i class="fa-solid fa-bullseye"></i></div>
+        <div><div class="stat-label">R² Score</div><div class="stat-value">{{ metrics.r2_score }}</div></div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon amber"><i class="fa-solid fa-ruler"></i></div>
+        <div><div class="stat-label">MAE</div><div class="stat-value">{{ metrics.mae }}</div></div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon purple"><i class="fa-solid fa-square-root-variable"></i></div>
+        <div><div class="stat-label">RMSE</div><div class="stat-value">{{ metrics.rmse }}</div></div>
+    </div>
+</div>
+
+{% if history %}
+<div class="card">
+    <div class="card-header"><h3><i class="fa-solid fa-chart-line"></i> Your Prediction History Trend</h3></div>
+    <canvas id="myPredChart" height="120"></canvas>
+</div>
+{% endif %}
+
+<div class="grid-2">
+    <div class="card">
+        <div class="card-header"><h3>Study Hours vs Final Marks</h3></div>
+        <canvas id="chart1" height="220"></canvas>
+    </div>
+    <div class="card">
+        <div class="card-header"><h3>Attendance vs Final Marks</h3></div>
+        <canvas id="chart2" height="220"></canvas>
+    </div>
+    <div class="card">
+        <div class="card-header"><h3>Previous Marks vs Final Marks</h3></div>
+        <canvas id="chart3" height="220"></canvas>
+    </div>
+    <div class="card">
+        <div class="card-header"><h3>Assignments vs Final Marks</h3></div>
+        <canvas id="chart4" height="220"></canvas>
+    </div>
+</div>
+
+<script>
+const ds = {{ dataset_stats|tojson }};
+const scatterOpts = (xLabel, yLabel) => ({
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: {
+        x: { title: { display: true, text: xLabel } },
+        y: { title: { display: true, text: yLabel }, beginAtZero: true, max: 100 }
+    }
+});
+
+function scatter(id, xs, ys, color) {
+    new Chart(document.getElementById(id), {
+        type: 'scatter',
+        data: { datasets: [{ data: xs.map((x,i)=>({x:x, y:ys[i]})), backgroundColor: color, pointRadius: 3.5 }] },
+        options: scatterOpts()
+    });
+}
+
+if (ds.count) {
+    scatter('chart1', ds.study_vs_final.study, ds.study_vs_final.final, '#6366f1');
+    scatter('chart2', ds.attendance_vs_final.attendance, ds.attendance_vs_final.final, '#22c55e');
+    scatter('chart3', ds.previous_vs_final.previous, ds.previous_vs_final.final, '#f59e0b');
+    scatter('chart4', ds.assignments_vs_final.assignments, ds.assignments_vs_final.final, '#0ea5e9');
+}
+
+{% if history %}
+const hist = {{ history|reverse|map(attribute='predicted_marks')|list|tojson }};
+const labels = {{ history|reverse|map(attribute='created_at')|list|tojson }};
+new Chart(document.getElementById('myPredChart'), {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Predicted Marks',
+            data: hist,
+            borderColor: '#4f46e5',
+            backgroundColor: 'rgba(79,70,229,0.1)',
+            fill: true, tension: 0.35
+        }]
+    },
+    options: { responsive: true, scales: { y: { beginAtZero: true, max: 100 } } }
+});
+{% endif %}
+</script>
+{% endblock %}

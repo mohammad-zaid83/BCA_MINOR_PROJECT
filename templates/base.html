@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Student Academic Analytics{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="layout">
+    {% if current_student_id %}
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+            <div>
+                <div class="brand-title">AcademiQ</div>
+                <div class="brand-sub">Performance Predictor</div>
+            </div>
+        </div>
+        <nav class="nav">
+            <a href="{{ url_for('dashboard') }}" class="nav-item {% if active=='dashboard' %}active{% endif %}">
+                <i class="fa-solid fa-gauge-high"></i> Dashboard
+            </a>
+            <a href="{{ url_for('prediction') }}" class="nav-item {% if active=='prediction' %}active{% endif %}">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Prediction
+            </a>
+            <a href="{{ url_for('analytics') }}" class="nav-item {% if active=='analytics' %}active{% endif %}">
+                <i class="fa-solid fa-chart-line"></i> Analytics
+            </a>
+            <a href="{{ url_for('history') }}" class="nav-item {% if active=='history' %}active{% endif %}">
+                <i class="fa-solid fa-clock-rotate-left"></i> History
+            </a>
+            <a href="{{ url_for('profile') }}" class="nav-item {% if active=='profile' %}active{% endif %}">
+                <i class="fa-solid fa-user"></i> Profile
+            </a>
+            <a href="{{ url_for('model_info') }}" class="nav-item {% if active=='model' %}active{% endif %}">
+                <i class="fa-solid fa-brain"></i> Model
+            </a>
+            <a href="{{ url_for('about') }}" class="nav-item {% if active=='about' %}active{% endif %}">
+                <i class="fa-solid fa-circle-info"></i> About
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-chip">
+                <div class="avatar">{{ current_student[0] }}</div>
+                <div>
+                    <div class="user-name">{{ current_student }}</div>
+                    <div class="user-id">{{ current_student_id }}</div>
+                </div>
+            </div>
+            <a href="{{ url_for('logout') }}" class="logout-btn">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </a>
+        </div>
+    </aside>
+    {% endif %}
+
+    <main class="main {% if not current_student_id %}main-full{% endif %}">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="toast-container">
+                    {% for cat, msg in messages %}
+                        <div class="toast toast-{{ cat }}">
+                            <i class="fa-solid {% if cat=='error' %}fa-circle-exclamation{% else %}fa-circle-check{% endif %}"></i>
+                            {{ msg }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+</div>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

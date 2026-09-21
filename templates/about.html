@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% set active = 'about' %}
+{% block title %}About{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>About This Project</h1>
+        <p class="muted">Student Academic Performance Prediction System</p>
+    </div>
+</div>
+
+<div class="card">
+    <h2><i class="fa-solid fa-bullseye"></i> Project Objective</h2>
+    <p>
+        This system uses <strong>Machine Learning</strong> to predict a student's final academic
+        marks based on academically relevant input features. The goal is to provide students with
+        early, data-driven insights into their likely performance so that corrective action can be
+        taken well before the final exams.
+    </p>
+</div>
+
+<div class="grid-2">
+    <div class="card">
+        <h2><i class="fa-solid fa-brain"></i> Machine Learning Model</h2>
+        <p>The project uses a <strong>Linear Regression</strong> model trained on a dataset of
+        historical student records.</p>
+        <ul class="feature-list">
+            <li><i class="fa-solid fa-check"></i> Algorithm: Linear Regression</li>
+            <li><i class="fa-solid fa-check"></i> Split: 80% Train / 20% Test</li>
+            <li><i class="fa-solid fa-check"></i> Random State: 42</li>
+            <li><i class="fa-solid fa-check"></i> Target: Final_Marks</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2><i class="fa-solid fa-list"></i> Input Features</h2>
+        <ul class="feature-list">
+            <li><i class="fa-solid fa-check"></i> Study_Hours</li>
+            <li><i class="fa-solid fa-check"></i> Attendance</li>
+            <li><i class="fa-solid fa-check"></i> Previous_Marks</li>
+            <li><i class="fa-solid fa-check"></i> Assignments_Completed</li>
+        </ul>
+    </div>
+</div>
+
+<div class="card">
+    <h2><i class="fa-solid fa-code"></i> Technologies Used</h2>
+    <div class="tech-grid">
+        <span class="tech-chip">Python</span>
+        <span class="tech-chip">Flask</span>
+        <span class="tech-chip">Scikit-learn</span>
+        <span class="tech-chip">Pandas</span>
+        <span class="tech-chip">NumPy</span>
+        <span class="tech-chip">SQLite</span>
+        <span class="tech-chip">HTML5</span>
+        <span class="tech-chip">CSS3</span>
+        <span class="tech-chip">JavaScript</span>
+        <span class="tech-chip">Chart.js</span>
+        <span class="tech-chip">Werkzeug Security</span>
+    </div>
+</div>
+
+<div class="card">
+    <h2><i class="fa-solid fa-graduation-cap"></i> Academic Context</h2>
+    <p>This project was developed as part of the <strong>BCA Minor Project</strong> curriculum,
+    combining Machine Learning, Web Development, Database Design and Data Visualization into a
+    single end-to-end application.</p>
+</div>
+{% endblock %}

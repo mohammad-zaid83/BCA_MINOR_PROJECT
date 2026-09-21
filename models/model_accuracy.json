@@ -1,0 +1,24 @@
+{
+  "algorithm": "Linear Regression",
+  "features": [
+    "Study_Hours",
+    "Attendance",
+    "Previous_Marks",
+    "Assignments_Completed"
+  ],
+  "target": "Final_Marks",
+  "train_size": 0.8,
+  "test_size": 0.2,
+  "random_state": 42,
+  "n_samples": 100,
+  "r2_score": 0.9957,
+  "mae": 0.6718,
+  "rmse": 0.9673,
+  "coefficients": {
+    "Study_Hours": -0.3988,
+    "Attendance": 0.3189,
+    "Previous_Marks": 0.7585,
+    "Assignments_Completed": 1.2627
+  },
+  "intercept": -14.1883
+}

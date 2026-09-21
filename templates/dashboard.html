@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% set active = 'dashboard' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Welcome back, {{ current_student.split()[0] }} 👋</h1>
+        <p class="muted">Here's an overview of your academic performance insights.</p>
+    </div>
+    <a href="{{ url_for('prediction') }}" class="btn btn-primary">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> New Prediction
+    </a>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon blue"><i class="fa-solid fa-chart-simple"></i></div>
+        <div>
+            <div class="stat-label">Latest Predicted Marks</div>
+            <div class="stat-value">
+                {% if latest %}{{ latest.predicted_marks }}{% else %}—{% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon green"><i class="fa-solid fa-award"></i></div>
+        <div>
+            <div class="stat-label">Current Grade</div>
+            <div class="stat-value">
+                {% if latest %}{{ latest.grade }}{% else %}—{% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon amber"><i class="fa-solid fa-gauge"></i></div>
+        <div>
+            <div class="stat-label">Performance Category</div>
+            <div class="stat-value small">
+                {% if latest %}{{ latest.category }}{% else %}—{% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon purple"><i class="fa-solid fa-list-check"></i></div>
+        <div>
+            <div class="stat-label">Total Predictions</div>
+            <div class="stat-value">{{ total_predictions }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="grid-2">
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fa-solid fa-clock-rotate-left"></i> Recent Predictions</h3>
+            <a href="{{ url_for('history') }}" class="link">View all →</a>
+        </div>
+        {% if recent %}
+        <table class="table">
+            <thead>
+                <tr><th>Date</th><th>Predicted</th><th>Grade</th><th>Category</th></tr>
+            </thead>
+            <tbody>
+                {% for r in recent %}
+                <tr>
+                    <td class="muted">{{ r.created_at }}</td>
+                    <td><strong>{{ r.predicted_marks }}</strong></td>
+                    <td><span class="badge">{{ r.grade }}</span></td>
+                    <td>{{ r.category }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty">
+            <i class="fa-solid fa-inbox"></i>
+            <p>No predictions yet. Create your first prediction!</p>
+            <a href="{{ url_for('prediction') }}" class="btn btn-primary">Make a Prediction</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <div class="card-header"><h3><i class="fa-solid fa-chart-pie"></i> Prediction Trend</h3></div>
+        {% if recent %}
+            <canvas id="trendChart" height="220"></canvas>
+        {% else %}
+            <div class="empty">
+                <i class="fa-solid fa-chart-line"></i>
+                <p>Chart will appear after your first prediction.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if recent %}
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+    const labels = {{ recent|reverse|map(attribute='created_at')|list|tojson }};
+    const values = {{ recent|reverse|map(attribute='predicted_marks')|list|tojson }};
+    new Chart(document.getElementById('trendChart'), {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Predicted Marks',
+                data: values,
+                borderColor: '#4f46e5',
+                backgroundColor: 'rgba(79,70,229,0.1)',
+                fill: true,
+                tension: 0.35,
+                pointRadius: 5,
+                pointBackgroundColor: '#4f46e5'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, max: 100 } }
+        }
+    });
+});
+</script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% set active = 'model' %}
+{% block title %}Model Information{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Model Information</h1>
+        <p class="muted">Details of the trained Linear Regression model.</p>
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon blue"><i class="fa-solid fa-square-root-variable"></i></div>
+        <div><div class="stat-label">R² Score</div><div class="stat-value">{{ metrics.r2_score }}</div></div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon amber"><i class="fa-solid fa-ruler"></i></div>
+        <div><div class="stat-label">MAE</div><div class="stat-value">{{ metrics.mae }}</div></div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon purple"><i class="fa-solid fa-gauge"></i></div>
+        <div><div class="stat-label">RMSE</div><div class="stat-value">{{ metrics.rmse }}</div></div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon green"><i class="fa-solid fa-database"></i></div>
+        <div><div class="stat-label">Samples</div><div class="stat-value">{{ metrics.n_samples }}</div></div>
+    </div>
+</div>
+
+<div class="grid-2">
+    <div class="card">
+        <div class="card-header"><h3><i class="fa-solid fa-sliders"></i> Model Configuration</h3></div>
+        <table class="table">
+            <tbody>
+                <tr><td>Algorithm</td><td><strong>{{ metrics.algorithm }}</strong></td></tr>
+                <tr><td>Target Variable</td><td><strong>{{ metrics.target }}</strong></td></tr>
+                <tr><td>Training Size</td><td><strong>{{ (metrics.train_size * 100)|round(0)|int }}%</strong></td></tr>
+                <tr><td>Testing Size</td><td><strong>{{ (metrics.test_size * 100)|round(0)|int }}%</strong></td></tr>
+                <tr><td>Random State</td><td><strong>{{ metrics.random_state }}</strong></td></tr>
+                <tr><td>Features Used</td><td><strong>{{ metrics.features|length }}</strong></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <div class="card-header"><h3><i class="fa-solid fa-list"></i> Input Features</h3></div>
+        <ul class="feature-list">
+            {% for f in metrics.features %}
+            <li><i class="fa-solid fa-check"></i> {{ f }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header"><h3><i class="fa-solid fa-function"></i> Model Coefficients</h3></div>
+    <table class="table">
+        <thead><tr><th>Feature</th><th>Coefficient</th></tr></thead>
+        <tbody>
+            {% for k, v in metrics.coefficients.items() %}
+            <tr><td>{{ k }}</td><td><strong>{{ v }}</strong></td></tr>
+            {% endfor %}
+            <tr><td>Intercept</td><td><strong>{{ metrics.intercept }}</strong></td></tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

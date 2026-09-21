@@ -1,0 +1,48 @@
+# Python
+
+**pycache**/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+
+.venv/
+venv/
+env/
+ENV/
+
+# Environment Variables / Secrets
+
+.env
+.env.*
+
+# IDE / Editor
+
+.vscode/
+.idea/
+
+# OS Files
+
+.DS_Store
+Thumbs.db
+
+# Python Tools
+
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Flask
+
+instance/
+
+# Temporary / Log Files
+
+*.log
+*.tmp
+
+# Local Database Backups
+
+*.db-journal
+*.db-wal
+*.db-shm

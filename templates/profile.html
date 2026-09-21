@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% set active = 'profile' %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Student Profile</h1>
+        <p class="muted">Your account details and activity summary.</p>
+    </div>
+</div>
+
+<div class="grid-2">
+    <div class="card profile-card">
+        <div class="profile-avatar">{{ student.name[0] }}</div>
+        <h2>{{ student.name }}</h2>
+        <p class="muted">{{ student.student_id }}</p>
+        <div class="profile-rows">
+            <div class="profile-row"><i class="fa-solid fa-envelope"></i><span>{{ student.email }}</span></div>
+            <div class="profile-row"><i class="fa-solid fa-book"></i><span>{{ student.course }}</span></div>
+            <div class="profile-row"><i class="fa-solid fa-calendar"></i><span>{{ student.semester }}</span></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header"><h3>Activity Summary</h3></div>
+        <div class="stats-grid stats-grid-tight">
+            <div class="stat-card stat-compact">
+                <div class="stat-icon purple"><i class="fa-solid fa-list-check"></i></div>
+                <div><div class="stat-label">Total Predictions</div><div class="stat-value">{{ total_predictions }}</div></div>
+            </div>
+        </div>
+        <div class="info-callout info-callout-tight">
+            <i class="fa-solid fa-shield-halved"></i>
+            <div>Your data is stored locally in an SQLite database and is only accessible to your account.</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

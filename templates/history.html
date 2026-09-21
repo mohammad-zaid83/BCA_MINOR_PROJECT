@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% set active = 'history' %}
+{% block title %}History{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Prediction History</h1>
+        <p class="muted">All predictions you've made so far.</p>
+    </div>
+    {% if history %}
+    <form method="POST" action="{{ url_for('clear_history_route') }}"
+          onsubmit="return confirm('Clear all your prediction history?');">
+        <button class="btn btn-danger"><i class="fa-solid fa-trash"></i> Clear History</button>
+    </form>
+    {% endif %}
+</div>
+
+<div class="card">
+    {% if history %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th><th>Date / Time</th>
+                <th>Study Hrs</th><th>Attendance</th>
+                <th>Previous</th><th>Assignments</th>
+                <th>Predicted</th><th>Grade</th><th>Category</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in history %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td class="muted">{{ r.created_at }}</td>
+                <td>{{ r.study_hours }}</td>
+                <td>{{ r.attendance }}%</td>
+                <td>{{ r.previous_marks }}</td>
+                <td>{{ r.assignments_completed }}</td>
+                <td><strong>{{ r.predicted_marks }}</strong></td>
+                <td><span class="badge">{{ r.grade }}</span></td>
+                <td>{{ r.category }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty">
+        <i class="fa-solid fa-inbox"></i>
+        <p>You haven't made any predictions yet.</p>
+        <a href="{{ url_for('prediction') }}" class="btn btn-primary">Make Your First Prediction</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
