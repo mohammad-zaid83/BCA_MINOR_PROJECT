@@ -10,7 +10,7 @@ from config import DATABASE_PATH
 
 # Demo student accounts (STU001..STU008)
 DEMO_STUDENTS = [
-    ("STU001", "Aarav Sharma",    "aarav@student.demo",    "BCA", "Semester 5", "stu001"),
+    ("STU001", "Mohammad zaid",    "zaid@student.demo",    "BCA", "Semester 5", "stu001"),
     ("STU002", "Diya Patel",      "diya@student.demo",     "BCA", "Semester 5", "stu002"),
     ("STU003", "Rohan Verma",     "rohan@student.demo",    "BCA", "Semester 5", "stu003"),
     ("STU004", "Ananya Iyer",     "ananya@student.demo",   "BCA", "Semester 5", "stu004"),
